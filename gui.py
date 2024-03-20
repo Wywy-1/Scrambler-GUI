@@ -11,9 +11,10 @@ import re
 peach = "#ffe5b4"
 black = "black"
 
-#TODO redefine Exam Bank directory to Documents? Get from settings file
-exam_bank_dir = Path('/Users/wyattschiefelbein/Desktop/Hobby/Programming/Python/Exam Bank')
-
+#TODO set default to Documents and give user the option to change the default exam bank directory
+#home_dir = Path.home()
+#exam_bank_dir = home_dir / "Documents"     # Will search Documents for exam bank CSVs
+exam_bank_dir = Path(__file__).parent.resolve() # Searches parent of this script for exam bank CSV
 
 ########## Command Methods ##########
 
