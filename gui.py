@@ -31,24 +31,24 @@ def give_cookie():
 
 
 def handle_send_press():
-    '''Takes user GUI-input and passes it to scramble_exam. Delets punctuation
+    '''Takes user GUI-input and passes it to scramble_exam. Deletes punctuation
     from user's desired file name, excepting commas (","). Closes ttk window.
     - Input: None
     - Returns: None'''
 
     # Punctuation to be removed from user input
-    sad_punctuation = '''!()-[]\{\};:'"\<>./?@#$%^&*_~'''
+    forbidden_punctuation = '''!()-[]\{\};:'"\<>./?@#$%^&*_~'''
 
     enter_value = entr.get()
     exam_nm = ""
 
     # If user does not give a name for the exam file/directory, name it 
     #       "Exam, xxx-xx,xxxx,xx:xx:xx", where "x" are the date and time
-    #       at send.
+    #       at send. Otherwise, take user's file name and remove punctuation.
     if enter_value == "":
         exam_nm = "Exam, {}".format(get_time())
     else:
-        exam_nm = enter_value.translate(str.maketrans('','',sad_punctuation))
+        exam_nm = enter_value.translate(str.maketrans('','',forbidden_punctuation))
 
     #Debugging
     print("At 'send,' the exam file to scramble is:\t{}".format(Combo.get()))
@@ -153,7 +153,6 @@ Combo.pack()
 
 # Exam Name Entry
 #TODO limit size of entry
-#TODO get rid of punctuation in entry (quotations are ok)
 label = tk.Label(
     right_frame, 
     text="What would you like to call this exam?",

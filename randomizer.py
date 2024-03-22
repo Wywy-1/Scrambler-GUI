@@ -70,25 +70,6 @@ def generate_tests(csv_file_name, name, shuffle_options, number_of_tests):
                 question.append_to_test_file(test_file, question_index, shuffle_options)
                 question.append_to_answer_file(answer_file, question_index)
 
-"""
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-
-    parser.add_argument('csv_file', help='CSV file with questions and options')
-
-    parser.add_argument('-s', '--shuffle',
-                        action='store_true',
-                        help='To also shuffle options for each question')
-
-    parser.add_argument('-n', '--number', required=False,
-                        type=int,
-                        default=1,
-                        help='Number of differently shuffled tests to create')
-
-
-    args = parser.parse_args()
-    generate_tests(args.csv_file, args.shuffle, args.number)
-"""
 
 def scramble_exam(exam_name: str, exam_bank_file: str, num_ver: int, yn_shuffle_qs: str):
     '''Calls generate_tests function and prints exam and answer keys to documents folder.
