@@ -11,7 +11,9 @@ https://gitlab.com/dnswrsrx/shenanigans/-/blob/master/wyatts_assessment_randomiz
 '''
 
 
-def collect_questions(file_name):
+def collect_questions(file_name: Path):
+    '''Returns a list of Question items containing each line of a csv 
+    file, except for the first line (the header).'''
     with open(file_name) as f:
         reader = csv.reader(f)
         # Skip the header row
@@ -20,6 +22,8 @@ def collect_questions(file_name):
 
 
 def as_alpha(index):
+    '''Returns the char corresponding to the passed int away from "a". 
+    E.g., as_alpha(1) returns "b", as_alpha(4) returns "e". '''
     return chr(index + ord('a'))
 
 
@@ -34,8 +38,8 @@ class Question:
         test_file_fp.write(f'{index}. {self.question}\n')
 
         # Shuffle only if more than 2 options.
-        if shuffle_options and len(self.options) > 2:
-            random.shuffle(self.options)
+        if shuffle_options and len(self.options) > 2:       # TODO #2 will this shuffle True/False questions? If no, set to '=>'
+            random.shuffle(self.options)                    # TODO #3 Currently, randomizer makes all answers "a". Does randmoize the question order, though
 
         for option_index, option in enumerate(self.options):
             test_file_fp.write(f'\t{as_alpha(option_index)}. {option}\n')
@@ -47,7 +51,10 @@ class Question:
 
 
 def generate_tests(csv_file_name, name, shuffle_options, number_of_tests):
-
+    '''Creates txt files corresponding to test and answer key.
+    - Parses csv data (questions/answers) into a list
+    - Updates the names of exams if there will be multiple versions
+    - Writes to exam and answer keys, shuffled'''
     questions = collect_questions(csv_file_name)
 
     for index in range(number_of_tests):
@@ -74,12 +81,14 @@ def generate_tests(csv_file_name, name, shuffle_options, number_of_tests):
 def scramble_exam(exam_name: str, exam_bank_file: str, num_ver: int, yn_shuffle_qs: str):
     '''Calls generate_tests function and prints exam and answer keys to documents folder.
     Prints a user friendly message to terminal and informs user of where the exams and
-    keyts can be found'''
+    keys can be found'''
 
 
     home_path = Path.home()     # /Users/[name]/
     print_to_path = home_path / 'Documents'
-    exam_dir = mk_dir(print_to_path / exam_name)
+    exam_dir = mk_dir(print_to_path / exam_name)    # Creates a directory to store exams and answer keys
+
+    exam_name_path = exam_dir / exam_name
 
     # Text to print to terminal
     separator = '\n*********************************\n'
@@ -87,7 +96,7 @@ def scramble_exam(exam_name: str, exam_bank_file: str, num_ver: int, yn_shuffle_
     print(separator)
     print(intro)
 
-    generate_tests(exam_bank_file,exam_name,yn_shuffle_qs,num_ver)
+    generate_tests(exam_bank_file,exam_name_path,yn_shuffle_qs,num_ver)
 
     #  print to terminal
     outro = '''Aaaaand, DONE!
@@ -95,4 +104,7 @@ def scramble_exam(exam_name: str, exam_bank_file: str, num_ver: int, yn_shuffle_
     print(outro.format(exam_dir))
     print(separator)
 
-scramble_exam("Test 1", "")
+scramble_exam('Test.4','Test1.csv',1,'')  # Test
+
+# TODO #4 Handle FileNotFoundError for exam bank CSV
+# TODO #5 Handle if to-print directory exists
