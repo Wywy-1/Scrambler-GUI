@@ -18,6 +18,7 @@ exam_bank_dir = Path(__file__).parent.resolve() # Searches parent of this script
 
 ########## Command Methods ##########
 
+# The give_cookie function provides a silly way to thank the program, by giving a 'cookie' to it.
 def give_cookie():
     '''Creates a new label in the left frame on "give cookie" button press.
     - Input: None
