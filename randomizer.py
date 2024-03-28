@@ -60,7 +60,7 @@ def generate_tests(csv_file_name, name, number_of_tests):
 
     for index in range(number_of_tests):
         # Add number into file name if more than one tests to be created
-        index_addition = f'_{index+1}' if number_of_tests > 1 else ''
+        index_addition = f' {index+1}' if number_of_tests > 1 else ''
         test_file_name = f'{name}{index_addition}.txt'
         answer_file_name = f'{name}{index_addition}, Answer Key.txt'
 
