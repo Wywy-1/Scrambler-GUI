@@ -15,7 +15,12 @@ def mk_dir(path: str) -> str:
         path.mkdir()
 
     except FileExistsError:
-        print('The file already exists, you are good to go!')
+        '''If directory exists, creates a new directory inside of the existing directory,
+        names it after the date, and sets this as the directory to create the exam
+        and answer key.'''
+        #path = Path(str(path)+"_"+get_time())      # Makes a new sibling directory with the old name AND the date
+        path = path / get_time()                    # Makes a new directory names after the date with existing dir the parent
+        path.mkdir()
 
     except FileNotFoundError:       # Exception is thrown when path specifices directories that don't exist
         print("Sorry, this path mentions folders that don't exist:, {}\n".format(path))
@@ -30,8 +35,13 @@ def mk_dir(path: str) -> str:
             path.mkdir()           # Makes desired directory in last existing directory of initial 'path' variable
 
         except FileExistsError:
-            print('{} already exists in {}, you are good to go!\n'.format(new_dir,path.name))
-        
+            '''If directory exists, creates a new directory inside of the existing directory,
+            names it after the date, and sets this as the directory to create the exam
+            and answer key.'''
+            #path = Path(str(path)+"_"+get_time())      # Makes a new sibling directory with the old name AND the date
+            path = path / get_time()                    # Makes a new directory names after the date with existing dir the parent
+            path.mkdir()   
+
         except Exception as err:
             print("Unexpected error,\n\n{}, {}\n".format(err,type(err)))
             exit()
@@ -75,14 +85,3 @@ def rename_file(path: Path) -> Path:
         path = parent / new_name
     
     return path
-
-
-'''
-#rename_file debugging
-hom = Path.home()
-desk = hom / "Desktop"
-f = desk / "test.txt"
-print("Old:\t\t{}".format(f))
-f = rename_file(f)
-print("New:\t\t{}".format(f))
-'''

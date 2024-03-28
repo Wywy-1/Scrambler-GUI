@@ -1,10 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
 from pathlib import Path
-from scramble import scramble_exam
+from file_n_dirs import mk_dir
+from randomizer import scramble_exam
 import datetime as dt
-import re
-#import scramble_menu
 
 # Constants
 
@@ -33,24 +32,24 @@ def give_cookie():
 
 
 def handle_send_press():
-    '''Takes user GUI-input and passes it to scramble_exam. Delets punctuation
+    '''Takes user GUI-input and passes it to scramble_exam. Deletes punctuation
     from user's desired file name, excepting commas (","). Closes ttk window.
     - Input: None
     - Returns: None'''
 
     # Punctuation to be removed from user input
-    sad_punctuation = '''!()-[]\{\};:'"\<>./?@#$%^&*_~'''
+    forbidden_punctuation = '''!()-[]\{\};:'"\<>./?@#$%^&*_~'''
 
     enter_value = entr.get()
     exam_nm = ""
 
     # If user does not give a name for the exam file/directory, name it 
     #       "Exam, xxx-xx,xxxx,xx:xx:xx", where "x" are the date and time
-    #       at send.
+    #       at send. Otherwise, take user's file name and remove punctuation.
     if enter_value == "":
         exam_nm = "Exam, {}".format(get_time())
     else:
-        exam_nm = enter_value.translate(str.maketrans('','',sad_punctuation))
+        exam_nm = enter_value.translate(str.maketrans('','',forbidden_punctuation))
 
     #Debugging
     print("At 'send,' the exam file to scramble is:\t{}".format(Combo.get()))
@@ -58,7 +57,7 @@ def handle_send_press():
     print("And the user says they want\t{} versions".format(Combo2.get()))
 
     exam_csv = exam_bank_dir / Combo.get()
-    #scramble_exam(exam_nm,exam_csv,int(Combo2.get()),question_scramble.get())
+    scramble_exam(exam_nm,exam_csv,int(Combo2.get()))
 
     window.destroy()
 
@@ -84,6 +83,9 @@ def get_time():
 files = []  # Will display all csv files in Exam folder TODO, mkdir then cd to exam folder
 
 #exam_bank_dir = Path(__file__).parents[1].resolve() # Sets exam_bank_dir to parent of this script
+home_path = Path.home()     # /Users/[name]/
+docu_path = home_path / 'Documents'
+exam_bank_dir = docu_path / 'Exam Bank'
 
 for file in exam_bank_dir.iterdir():
     if file.suffix == '.csv':       # Only appends csv files to files list
@@ -155,7 +157,6 @@ Combo.pack()
 
 # Exam Name Entry
 #TODO limit size of entry
-#TODO get rid of punctuation in entry (quotations are ok)
 label = tk.Label(
     right_frame, 
     text="What would you like to call this exam?",
@@ -186,23 +187,6 @@ Combo2 = ttk.Combobox(
 )
 Combo2.set(1)
 Combo2.pack()
-
-# "Scramble questions" checkbox
-label = tk.Label(
-    right_frame, 
-    text='Would you like me to scramble the questions, or just the anwers?',
-    bg=peach
-)
-label.pack(padx = 5, pady = 15)
-
-question_scramble = tk.StringVar()
-check = ttk.Checkbutton(
-    right_frame,
-    text='Scramble the questions, too.',
-    variable=question_scramble,
-    onvalue="1",
-)
-check.pack()
 
 # Define Send Button
 btn = tk.Button(right_frame,text="Send",command=handle_send_press)
