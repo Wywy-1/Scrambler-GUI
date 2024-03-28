@@ -10,23 +10,6 @@ from pathlib import Path
 https://gitlab.com/dnswrsrx/shenanigans/-/blob/master/wyatts_assessment_randomizer/randomizer.py?ref_type=heads
 '''
 
-
-def collect_questions(file_name: Path):
-    '''Returns a list of Question items containing each line of a csv 
-    file, except for the first line (the header).'''
-    with open(file_name) as f:
-        reader = csv.reader(f)
-        # Skip the header row
-        next(reader)
-        return [Question(row) for row in reader]
-
-
-def as_alpha(index):
-    '''Returns the char corresponding to the passed int away from "a". 
-    E.g., as_alpha(1) returns "b", as_alpha(4) returns "e". '''
-    return chr(index + ord('a'))
-
-
 class Question:
 
     def __init__(self, row):
@@ -49,6 +32,22 @@ class Question:
 
     def append_to_answer_file(self, answer_file_fp, index):
         answer_file_fp.write(f'{index}. {as_alpha(self.options.index(self.correct))}\n')
+
+
+def collect_questions(file_name: Path):
+    '''Returns a list of Question items containing each line of a csv 
+    file, except for the first line (the header).'''
+    with open(file_name) as f:
+        reader = csv.reader(f)
+        # Skip the header row
+        next(reader)
+        return [Question(row) for row in reader]
+
+
+def as_alpha(index):
+    '''Returns the char corresponding to the passed int away from "a". 
+    E.g., as_alpha(1) returns "b", as_alpha(4) returns "e". '''
+    return chr(index + ord('a'))
 
 
 def generate_tests(csv_file_name, name, number_of_tests):
