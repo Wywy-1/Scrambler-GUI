@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from pathlib import Path
+from file_n_dirs import mk_dir
 from randomizer import scramble_exam
 import datetime as dt
 
@@ -80,6 +81,9 @@ def get_time():
 files = []  # Will display all csv files in Exam folder TODO, mkdir then cd to exam folder
 
 #exam_bank_dir = Path(__file__).parents[1].resolve() # Sets exam_bank_dir to parent of this script
+home_path = Path.home()     # /Users/[name]/
+docu_path = home_path / 'Documents'
+exam_bank_dir = docu_path / 'Exam Bank'
 
 for file in exam_bank_dir.iterdir():
     if file.suffix == '.csv':       # Only appends csv files to files list
