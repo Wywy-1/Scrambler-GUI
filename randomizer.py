@@ -79,7 +79,7 @@ def generate_tests(csv_file_name, name, number_of_tests):
                 question.append_to_answer_file(answer_file, question_index)
 
 
-def scramble_exam(exam_name: str, exam_bank_file: str, num_ver: int, yn_shuffle_qs: str):
+def scramble_exam(exam_name: str, exam_bank_file: str, num_ver: int):
     '''Calls generate_tests function and prints exam and answer keys to documents folder.
     Prints a user friendly message to terminal and informs user of where the exams and
     keys can be found'''
