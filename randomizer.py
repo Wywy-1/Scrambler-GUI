@@ -1,7 +1,5 @@
 import csv
 import random
-import argparse
-
 from file_n_dirs import mk_dir
 from file_n_dirs import rename_file
 from pathlib import Path
@@ -89,7 +87,7 @@ def scramble_exam(exam_name: str, exam_bank_file: str, num_ver: int):
 
     home_path = Path.home()     # /Users/[name]/
     print_to_path = home_path / 'Documents'
-    exam_dir = mk_dir(print_to_path / exam_name)    # Creates a directory to store exams and answer keys
+    exam_dir = mk_dir(print_to_path / exam_name)
 
     exam_name_path = exam_dir / exam_name
 
