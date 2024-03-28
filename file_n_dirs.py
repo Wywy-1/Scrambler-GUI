@@ -41,7 +41,7 @@ def mk_dir(path: str) -> str:
             #path = Path(str(path)+"_"+get_time())      # Makes a new sibling directory with the old name AND the date
             path = path / get_time()                    # Makes a new directory names after the date with existing dir the parent
             path.mkdir()   
-                 
+
         except Exception as err:
             print("Unexpected error,\n\n{}, {}\n".format(err,type(err)))
             exit()
@@ -85,14 +85,3 @@ def rename_file(path: Path) -> Path:
         path = parent / new_name
     
     return path
-
-
-'''
-#rename_file debugging
-hom = Path.home()
-desk = hom / "Desktop"
-f = desk / "test.txt"
-print("Old:\t\t{}".format(f))
-f = rename_file(f)
-print("New:\t\t{}".format(f))
-'''

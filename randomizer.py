@@ -108,4 +108,3 @@ def scramble_exam(exam_name: str, exam_bank_file: str, num_ver: int):
 scramble_exam('Test.4','Test2.csv',1)  # Test
 
 # TODO #4 Handle FileNotFoundError for exam bank CSV
-# TODO #5 Handle if to-print directory exists

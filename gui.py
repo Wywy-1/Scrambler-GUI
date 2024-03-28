@@ -3,8 +3,6 @@ from tkinter import ttk
 from pathlib import Path
 from randomizer import scramble_exam
 import datetime as dt
-import re
-#import scramble_menu
 
 # Constants
 
