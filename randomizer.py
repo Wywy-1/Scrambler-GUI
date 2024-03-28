@@ -55,8 +55,11 @@ def generate_tests(csv_file_name, name, number_of_tests):
     - Parses csv data (questions/answers) into a list
     - Updates the names of exams if there will be multiple versions
     - Writes to exam and answer keys, shuffled'''
+
     questions = collect_questions(csv_file_name)
 
+    # Shuffles questions/options and prints to exam and answer key files, repeating to
+    # make multiple versions and storing these in a (new) shared directory
     for index in range(number_of_tests):
         # Add number into file name if more than one tests to be created
         index_addition = f' {index+1}' if number_of_tests > 1 else ''
