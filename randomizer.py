@@ -34,7 +34,7 @@ class Question:
         # Remove empty string for incorrect options
         self.options = [self.correct, *(i for i in self.incorrect if i)]
 
-    def append_to_test_file(self, test_file_fp, index, shuffle_options):
+    def append_to_test_file(self, test_file_fp, index):
         test_file_fp.write(f'{index}. {self.question}\n')
 
         # Shuffle only if more than 2 options.
@@ -51,7 +51,7 @@ class Question:
         answer_file_fp.write(f'{index}. {as_alpha(self.options.index(self.correct))}\n')
 
 
-def generate_tests(csv_file_name, name, shuffle_options, number_of_tests):
+def generate_tests(csv_file_name, name, number_of_tests):
     '''Creates txt files corresponding to test and answer key.
     - Parses csv data (questions/answers) into a list
     - Updates the names of exams if there will be multiple versions
@@ -75,7 +75,7 @@ def generate_tests(csv_file_name, name, shuffle_options, number_of_tests):
             random.shuffle(questions)
 
             for question_index, question in enumerate(questions, start=1):
-                question.append_to_test_file(test_file, question_index, shuffle_options)
+                question.append_to_test_file(test_file, question_index)
                 question.append_to_answer_file(answer_file, question_index)
 
 
@@ -97,7 +97,7 @@ def scramble_exam(exam_name: str, exam_bank_file: str, num_ver: int, yn_shuffle_
     print(separator)
     print(intro)
 
-    generate_tests(exam_bank_file,exam_name_path,yn_shuffle_qs,num_ver)
+    generate_tests(exam_bank_file,exam_name_path,num_ver)
 
     #  print to terminal
     outro = '''Aaaaand, DONE!
