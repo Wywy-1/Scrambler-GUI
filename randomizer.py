@@ -34,18 +34,18 @@ class Question:
         # Remove empty string for incorrect options
         self.options = [self.correct, *(i for i in self.incorrect if i)]
 
-    def append_to_test_file(self, test_file_fp, index):
-        test_file_fp.write(f'{index}. {self.question}\n')
+    def append_to_test_file(self, exam_file_fp, index):
+        exam_file_fp.write(f'{index}. {self.question}\n')
 
         # Shuffle only if more than 2 options.
         if len(self.options) > 1:
             random.shuffle(self.options)
-            print("In shuffle_options")
+            #print("In shuffle_options")        #For Debugging
 
         for option_index, option in enumerate(self.options):
-            test_file_fp.write(f'\t{as_alpha(option_index)}. {option}\n')
+            exam_file_fp.write(f'\t{as_alpha(option_index)}. {option}\n')
 
-        test_file_fp.write('\n')
+        exam_file_fp.write('\n')
 
     def append_to_answer_file(self, answer_file_fp, index):
         answer_file_fp.write(f'{index}. {as_alpha(self.options.index(self.correct))}\n')
