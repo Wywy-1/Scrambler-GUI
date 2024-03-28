@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from pathlib import Path
-from scramble import scramble_exam
+from randomizer import scramble_exam
 import datetime as dt
 import re
 #import scramble_menu
@@ -56,7 +56,7 @@ def handle_send_press():
     print("And the user says they want\t{} versions".format(Combo2.get()))
 
     exam_csv = exam_bank_dir / Combo.get()
-    #scramble_exam(exam_nm,exam_csv,int(Combo2.get()),question_scramble.get())
+    scramble_exam(exam_nm,exam_csv,int(Combo2.get()))
 
     window.destroy()
 
@@ -183,23 +183,6 @@ Combo2 = ttk.Combobox(
 )
 Combo2.set(1)
 Combo2.pack()
-
-# "Scramble questions" checkbox
-label = tk.Label(
-    right_frame, 
-    text='Would you like me to scramble the questions, or just the anwers?',
-    bg=peach
-)
-label.pack(padx = 5, pady = 15)
-
-question_scramble = tk.StringVar()
-check = ttk.Checkbutton(
-    right_frame,
-    text='Scramble the questions, too.',
-    variable=question_scramble,
-    onvalue="1",
-)
-check.pack()
 
 # Define Send Button
 btn = tk.Button(right_frame,text="Send",command=handle_send_press)
