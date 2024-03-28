@@ -38,8 +38,9 @@ class Question:
         test_file_fp.write(f'{index}. {self.question}\n')
 
         # Shuffle only if more than 2 options.
-        if shuffle_options and len(self.options) > 2:       # TODO #2 will this shuffle True/False questions? If no, set to '=>'
-            random.shuffle(self.options)                    # TODO #3 Currently, randomizer makes all answers "a". Does randmoize the question order, though
+        if len(self.options) >= 2:
+            random.shuffle(self.options)
+            print("In shuffle_options")
 
         for option_index, option in enumerate(self.options):
             test_file_fp.write(f'\t{as_alpha(option_index)}. {option}\n')
@@ -104,7 +105,7 @@ def scramble_exam(exam_name: str, exam_bank_file: str, num_ver: int, yn_shuffle_
     print(outro.format(exam_dir))
     print(separator)
 
-scramble_exam('Test.4','Test1.csv',1,'')  # Test
+scramble_exam('Test.4','Test1.csv',True,'')  # Test
 
 # TODO #4 Handle FileNotFoundError for exam bank CSV
 # TODO #5 Handle if to-print directory exists
