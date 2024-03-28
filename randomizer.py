@@ -38,7 +38,7 @@ class Question:
         test_file_fp.write(f'{index}. {self.question}\n')
 
         # Shuffle only if more than 2 options.
-        if len(self.options) >= 2:
+        if len(self.options) > 1:
             random.shuffle(self.options)
             print("In shuffle_options")
 
@@ -105,7 +105,7 @@ def scramble_exam(exam_name: str, exam_bank_file: str, num_ver: int, yn_shuffle_
     print(outro.format(exam_dir))
     print(separator)
 
-scramble_exam('Test.4','Test1.csv',True,'')  # Test
+scramble_exam('Test.4','Test2.csv',True,'')  # Test
 
 # TODO #4 Handle FileNotFoundError for exam bank CSV
 # TODO #5 Handle if to-print directory exists
