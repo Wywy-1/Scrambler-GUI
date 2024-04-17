@@ -2,6 +2,7 @@ import csv
 import random
 from file_n_dirs import mk_dir
 from file_n_dirs import rename_file
+from dates import get_time
 from pathlib import Path
 
 '''Originally developed by dnswrsrx. Incorporated March 19, 2024, from 
@@ -79,14 +80,33 @@ def generate_tests(csv_file_name, name, number_of_tests):
                 question.append_to_answer_file(answer_file, question_index)
 
 
+def clean_input(input):
+    '''Takes a str representing user input and, a) returns a str if null,
+    or b) replaces all "forbidden" puntuation with commas and returns this
+    string.'''
+    forbidden_punctuation = '''!()-[]\{\};:'"\<>./?@#$%^&*_~'''
+
+    # If user does not give a name for the exam file/directory, name it 
+    #       "Exam, xxx-xx,xxxx,xx:xx:xx", where "x" are the date and time
+    #       at send. Otherwise, take user's file name and remove punctuation.
+    if input == "":
+        exam_nm = "Exam, {}".format(get_time())
+    else:
+        exam_nm = input.translate(str.maketrans('','',forbidden_punctuation))
+
+    return exam_nm
+
+
 def scramble_exam(exam_name: str, exam_bank_file: str, num_ver: int):
     '''Calls generate_tests function and prints exam and answer keys to documents folder.
     Prints a user friendly message to terminal and informs user of where the exams and
-    keys can be found'''
+    keys can be found. 
+    - Returns the Path to the folder where exams are printed to.'''
 
+    exam_name = clean_input(exam_name)
 
     home_path = Path.home()     # /Users/[name]/
-    print_to_path = home_path / 'Documents'
+    print_to_path = home_path / 'Desktop'
     exam_dir = mk_dir(print_to_path / exam_name)
 
     exam_name_path = exam_dir / exam_name
@@ -105,4 +125,6 @@ def scramble_exam(exam_name: str, exam_bank_file: str, num_ver: int):
     print(outro.format(exam_dir))
     print(separator)
 
-scramble_exam('Test.4','Test2.csv',1)  # Test
+    return exam_dir
+
+#scramble_exam('Test.4','Test2.csv',1)  # Test

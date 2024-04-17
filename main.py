@@ -1,5 +1,3 @@
-
-
 def main():
     #init gui
     """
@@ -15,3 +13,6 @@ def main():
     #      - Use while loop to pass version number to scramble
     #           in scramble exam(,,#,)
     #prompt to continue
+
+if __name__ == "__main__":
+    main()
