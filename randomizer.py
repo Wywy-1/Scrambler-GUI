@@ -100,12 +100,13 @@ def clean_input(input):
 def scramble_exam(exam_name: str, exam_bank_file: str, num_ver: int):
     '''Calls generate_tests function and prints exam and answer keys to documents folder.
     Prints a user friendly message to terminal and informs user of where the exams and
-    keys can be found'''
+    keys can be found. 
+    - Returns the Path to the folder where exams are printed to.'''
 
     exam_name = clean_input(exam_name)
 
     home_path = Path.home()     # /Users/[name]/
-    print_to_path = home_path / 'Documents'
+    print_to_path = home_path / 'Desktop'
     exam_dir = mk_dir(print_to_path / exam_name)
 
     exam_name_path = exam_dir / exam_name
@@ -123,5 +124,7 @@ def scramble_exam(exam_name: str, exam_bank_file: str, num_ver: int):
     \nThe exam(s) and the answer key(s) can be found at\t{}.\n\nêkosi mâka!'''
     print(outro.format(exam_dir))
     print(separator)
+
+    return exam_dir
 
 #scramble_exam('Test.4','Test2.csv',1)  # Test
