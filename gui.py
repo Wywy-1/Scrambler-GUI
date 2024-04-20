@@ -6,6 +6,10 @@ from tkinter import ttk
 
 #from randomizer import scramble_exam
 from pathlib import Path
+from file_n_dirs import get_document_dir
+from file_n_dirs import make_exam_bank
+from file_n_dirs import get_exam_bank
+from file_n_dirs import append_to_file
 
 '''References:
 The code on this script is adapted from the following sources:
@@ -29,7 +33,7 @@ peach = '#FAAF90'
 l_peach= '#FCC9B5'
 lavender = '#D9E4FF'
 periwinkle = '#B3C7F7'
-blurple = '#8BABF1'
+instruction_blurple = '#8BABF1'
 
 '''
 # Accessible pallet #2
@@ -80,6 +84,11 @@ class tab:
         label.grid(column=1,row=1)
         self.notebook.pack()
 
+    def add_bank_tab(self):
+        frame = exam_bank_tab(self.notebook)
+        self.notebook.add(frame,text='New Exam Bank')
+        self.notebook.pack()
+
     def add_scramble_tab(self):
         frame = scramble_tab(self.notebook)
         self.notebook.add(frame,text='Scramble Exam')
@@ -101,58 +110,21 @@ class intro_tab(ttk.Frame):
     def __init__(self,parent):
         super().__init__(parent)    # Give intro frame the tk attribute
 
-        text1 = '''tân'si, hello!\n\n\tMy name is Scrambler, I help shuffle
-        exam questions (and answers) into new versions of an exam; I also make the
-        subsequent answer keys!\n\n\tI am not a "smart" program, but I do
-        just fine! I don't collect data about you, your device, or anything.
-        I simply take input and work with it, but I can be a bit finicky about it, so
-        please bear with me!\n\n\t
-        
-            You should see tabs above this text, they say "Introduction," "Scramble," 
-        "Instructions," "New Exam / Move Exams," and "Support." The first tab, 
-        "Scramble", is where you can create new versions. By default, I put new exams 
-        I make into a folder in your Documents. If you give me a name, I'll call that 
-        folder the name you give me! If you don't give me a name, I'll just call it 
-        "Exam" and the date and time.
-        
-            "New Exam" is where you'll go to create a new exam! Because I am a simple
-        program, I can't read word documents or anything like that. I can only read
-        in an easy document-type called Comma-Separated Value, or CSV for short. When you
-        click on the "New Exam" tab, I'll give you options to write exam question(s),
-        a correct answer, and false answers. I'll then take these and save them as 
-        a CSV file in a folder called "Exam Banks". This folder will be in your
-        documents. If you want to edit a question in a specific exam, you can do that as
-        follows:
-                1) CSV is a simple text file that works like an excel spreadsheet
-                2) each column of information is seperated by a comma (",")
-                3) for example:
+        text1 = '''tân'si, hello!\n\nMy name is Scrambler, and I am a program that helps instructors shuffle exams into unique versions. I also make answer keys for those versions!\n\nI am a simple progam in that all I do is: a) make a folder in your Documents called "Exam Bank", where I store exams; b) write your exams as templates in a format I can read, called CSV; and finally, c) take those templates and make unique versions of exams, printing them, along with an answer key, in a simple file format (.txt) that you can then copy and paste into word, pages, or docs to make pretty!\n\nThat is to say, I write files and I make folders in your Documents and Desktop. I don't delete folders or files, and I don't collect information about you or anything like that.\n\nIf you have comments or feedback, email my programmer, Wyatt, with the email in the "Contact / Support" tab. If you feel like it, you can also tip him with the paypal link in that same tab! (His favourite coffee is $5.45)'''
 
-                    "information 1" ,  "information 2" ,  "information 3"
-
-                4) Your exam is written like this:
-                
-                    "Question, can have commas within quotes","Correct Answer","Incorrect Answer"
-
-                    and prints like this:
-
-                    1) Question, can have commas within quotes
-                        a) Correct Answer
-                        b) Incorrect Answer
-                    
-                5) If you go to manually change the exam, you'll notice that sometimes there are
-                    no double-quotes around questions: This is just short-hand, I only put double-
-                    quotations when a question or answer has a comma in it that doesn't mean "next
-                    information".
-                    
-                6) If you edit your exam and it no longer prints how you want, double check that
-                    free commas (those not surrounded by double-quotes) only exist where you want
-                    to seperate information.
-                    
-                7) My developer will be making an option to more easily edit exams with my 
-                    descendants!'''
-
-        self.intro_text_label = ttk.Label(self, text = text1)
+        self.intro_text_label = ttk.Label(self, text = text1,wraplength=700)
         self.intro_text_label.grid(row=0, column=0)
+
+
+class exam_bank_tab(ttk.Frame):
+    def __init__(self,parent):
+        super().__init__(parent)
+
+        text_1 = """Let's set up your exam bank to get started!\nThe Exam Bank is a folder where I'll save all exam templates. When you click the button, below, I'll make a folder in your documents folder called 'Exam Bank.'\nAfter this, restart Scrambler and then we can create your first template! I'll use the templates to scramble exams in the future for you."""
+        self.label = ttk.Label(self,text=text_1,justify='center',width=38,foreground=instruction_blurple,wraplength=350)
+        self.label.grid(column=0,row=0,columnspan=2)
+        self.btn3 = ttk.Button(self, text="Make Exam Bank", command= lambda : make_exam_bank())
+        self.btn3.grid(row=1, column=0,columnspan=2)
 
 
 class scramble_tab(ttk.Frame):
@@ -162,7 +134,7 @@ class scramble_tab(ttk.Frame):
 
         ############# Instructions, Right Side ###########
         text_1 = """   Give the exam you want me to make a name, for example, 'Midterm 1, Psych 201', or 'Balinda.'\n   Then choose the exam you'd like to scramble and give the name. I look for exams in a folder, 'Exam Bank' in your documents. I only look for CSV files in that folder, though, so something like a word document (.docx) is basically invisiable to me.\n   Next, choose the number of versions you'd like me to make.\n   When you're ready, click 'send' and I'll make your exam! I'll put it in a folder on your desktop with the name you give me."""
-        self.instruction_label = ttk.Label(self,text=text_1,justify='left',width=40,foreground=blurple,wraplength=350)
+        self.instruction_label = ttk.Label(self,text=text_1,justify='left',width=40,foreground=instruction_blurple,wraplength=350)
         self.instruction_label.grid(column=1, rowspan=6, padx=5, pady=10)
 
 
@@ -186,12 +158,19 @@ class scramble_tab(ttk.Frame):
         home_path = Path.home()     # /Users/[name]
         exam_bank = home_path / 'Documents' / 'Exam Bank'
 
-        for file in exam_bank.iterdir():
-            if file.suffix == '.csv':
-                files.append(file.name)
+        try:
+            for file in exam_bank.iterdir():
+                if file.suffix == '.csv':
+                    files.append(file.name)
+        except (FileNotFoundError):     #TODO #4 make a more elegant solution for no Exam Bank?
+            #exam_bank = make_exam_bank()
+            files.append("Exam Bank is empty.")
 
         self.exam = write_in(self)
+
         self.exam['values'] = files
+        self.exam['state'] = 'readonly'
+
         self.exam.grid(row=3,column=0)
         self.exam.current()
         
@@ -222,9 +201,10 @@ class new_exam(ttk.Frame):
         super().__init__(parent)    # Gives scramble_frame the 'tk' attritbute
 
         ############# Instructions #############
-        text1 = """Name the template something you'll remmebr; e.g., 'Midterm 2, Psych 101. Then press 'Send Exam Name. This will create your Exam template file for this exam, putting it in 'Exam Bank' in your documents folder.\n Then add questions and answers, one at a time, pressing 'Send Question and Answers' after each.\n\nFor 'all of the above' type questions, put 'all options' in the correct-answer box.\n\nFor essay questions, simply add one answer in the correct answer box."""
-        self.instr_label = ttk.Label(self, text=text1,padding=20,wraplength=350,foreground=blurple)
+        text1 = """Name the template something you'll remmebr; e.g.,'Midterm 2, Psych 101. Then press 'Send Exam Name. This will create your Exam template file for this exam, putting it in 'Exam Bank' in your documents folder.\n Then add questions and answers, one at a time, pressing 'Send Question and Answers' after each.\n\nFor 'all of the above' type questions, put 'all options' in the correct-answer box.\n\nFor essay questions, simply add one answer in the correct answer box."""
+        self.instr_label = ttk.Label(self, text=text1,padding=20,wraplength=350,foreground=instruction_blurple)
         self.instr_label.grid(row=0,column=3,rowspan=8)
+
         ############# Exam Name #############
         # Label
         self.exam_name_label = ttk.Label(self, text="What would you like to call this exam template?",justify='center')
@@ -267,21 +247,24 @@ class new_exam(ttk.Frame):
         self.ia_3 = usr_input(self)
         self.ia_3.grid(row=6,column=1)
 
+        self.exam_path = get_exam_bank()
+
         ############# Send Template Name Button #############
         self.btn1 = ttk.Button(self,text='Send Name',\
-                               command= lambda : (print("Exam name is: {}".format(self.exam_name.get())),self.exam_name.configure(state='disabled')))
+                               command= lambda :((print("Exam name is: {}".format(self.exam_name.get())),self.exam_name.configure(state='disabled')),self.btn2.configure(state='active')))
         self.btn1.grid(row=1,column=1)
-    
+        
         ############# Send Question Button #############
         # Record question and answers within seperate double-quotations marks, then erases entries from ttk.Entry widgets
-        self.btn2 = ttk.Button(self, text='Send Question and Answers',\
+        self.btn2 = ttk.Button(self, state='disabled', text='Send Question and Answers',\
                               command= lambda : (\
-                                print('"{}","{}","{}","{}","{}"'.format(\
-                                    self.q.get(),\
-                                    self.ca.get(),\
-                                    self.ia_1.get(),\
-                                    self.ia_2.get(),\
-                                    self.ia_3.get())),\
+                                append_to_file(\
+                                    self.exam_path / str(self.exam_name.get() + '.csv'),\
+                                        self.q.get(),\
+                                            self.ca.get(),\
+                                                self.ia_1.get(),\
+                                                    self.ia_2.get(),\
+                                                        self.ia_3.get()),\
                                 self.q.delete(0,'end'),\
                                 self.ca.delete(0,'end'),\
                                 self.ia_1.delete(0,'end'),\
@@ -289,6 +272,9 @@ class new_exam(ttk.Frame):
                                 self.ia_3.delete(0,'end')))
         self.btn2.grid(row=7, column=0, columnspan=2)
 
+        #Debug Button
+        self.btn3 = ttk.Button(self,text="Test", command = lambda : (print("{}".format(self.exam_path / str(self.exam_name.get())))))
+        self.btn3.grid(row=8,column=0)
 
 #   Entry Class
 class usr_input(tk.Entry):
@@ -316,10 +302,15 @@ if __name__ == "__main__":
     app = app()
 
     nb = tab(app)
+    exam_bank = get_document_dir()
+    exam_bank = exam_bank / "Exam Bank"
 
     nb.add_intro_tab()
-    nb.add_scramble_tab()
-    nb.add_new_exam_tab()
+    if exam_bank.exists():
+        nb.add_scramble_tab()
+        nb.add_new_exam_tab()
+    else:
+        nb.add_bank_tab()
 
     app.mainloop()
 

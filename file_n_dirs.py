@@ -5,7 +5,8 @@ from dates import get_time
 def mk_dir(path: str) -> str:
     """Makes a directory when given the desired full path (i.e., with
     the desired directory's name), returns the path of the new directory:
-    - Handles FilesExistsError by printing to terminal and continuing,
+    - Handles FilesExistsError by creating a directory with the date and time
+     inside of the existing directory and continuing,
     - Handles FileNotFoundError by finding the first existing directory in
     the path it is passed and making the desired directory there (if it
     already exists then prints to terminal and continues);
@@ -18,7 +19,6 @@ def mk_dir(path: str) -> str:
         '''If directory exists, creates a new directory inside of the existing directory,
         names it after the date, and sets this as the directory to create the exam
         and answer key.'''
-        #path = Path(str(path)+"_"+get_time())      # Makes a new sibling directory with the old name AND the date
         path = path / get_time()                    # Makes a new directory names after the date with existing dir the parent
         path.mkdir()
 
@@ -52,7 +52,12 @@ def mk_dir(path: str) -> str:
     
     return path
     
- 
+
+def append_to_file(path: str,q,a,i,i2,i3):
+
+    with open(path, 'a+') as file:
+        file.write('"{}","{}","{}","{}","{}"\n'.format(q,a,i,i2,i3))
+
 def find_existing_dir_in_path(count: int, path: str) -> str:
     """Searches through each parent in a path, returns the first
     parent that exists, and "." if no parent exists. 
@@ -80,8 +85,35 @@ def rename_file(path: Path) -> Path:
 
     if path.exists():
         parent = path.parent
-        old_suff = path.suffix
-        new_name = path.stem + ", " + get_time() + old_suff
+        file_type = path.suffix
+        new_name = path.stem + ", " + get_time() + file_type
         path = parent / new_name
     
     return path
+
+def get_document_dir() -> Path:
+    home_path = Path.home()     # /Users/[name]/
+    target_path = home_path / 'Documents'
+    return target_path
+
+def get_exam_bank() -> Path:
+    target_path = get_document_dir()
+    exam_bank = target_path / "Exam Bank"
+    return exam_bank
+
+def make_exam_bank() -> Path:
+    documents = get_document_dir()
+    exam_bank = documents / "Exam Bank"
+    exam_bank = mk_dir(exam_bank)
+    return exam_bank
+
+def get_desktop() -> Path:
+    home_path = Path.home()     # /Users/[name]/
+    target_path = home_path / 'Desktop'
+    return target_path
+
+if __name__ == "__main__":
+    print("Hi.")
+    exambank = get_exam_bank()
+    exam = exambank / 'name.csv'
+    append_to_file(exam)
