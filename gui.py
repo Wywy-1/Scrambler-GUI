@@ -4,7 +4,7 @@ from tkinter import ttk
 #from tkinter.messagebox import showinfo
 #from tkinter.messagebox import showerror
 
-#from randomizer import scramble_exam
+from randomizer import scramble_exam
 from pathlib import Path
 from file_n_dirs import get_document_dir
 from file_n_dirs import make_exam_bank
@@ -26,15 +26,16 @@ https://www.pythontutorial.net/tkinter/tkinter-object-oriented-application/
 
 https://www.pythontutorial.net/tkinter/ttk-style/
 '''
-beige = "#ffe5b4"
-black = "black"
+
+label_width = 40
 
 # Accessible Pallete #1
 peach = '#FAAF90'
 l_peach= '#FCC9B5'
 lavender = '#D9E4FF'
 periwinkle = '#B3C7F7'
-instruction_blurple = '#8BABF1'
+instruction_blurple = '#005051'
+d_green = '#002a2a'
 
 '''
 # Accessible pallet #2
@@ -50,40 +51,24 @@ class app(tk.Tk):
         super().__init__()
 
         self.title('Scrambler')
-        self.geometry('1200x900')
+        self.geometry('1200x700')
 
         # UI
-        paddings = {'padx': 5, 'pady': 5}
-        entry_font = {'font': ('Helvetica', 11)}
-
-        default_font = ('Times', 18)
+        default_font = ('Comfortaa', 20)
+        button_font = ('Georgia', 15)
 
         # Style
-        self.configure(background=l_peach, relief=tk.RAISED)
+        self.configure(background=instruction_blurple, relief=tk.RAISED)
         self.style = ttk.Style(self)
-        self.style.configure('TLabel', background=lavender,font=default_font)
-        self.style.configure('TNotebook', bg=lavender,font=default_font)
-
-
-class Tstyle():
-    def __init__(self,parent):
-        self.style = ttk.Style(parent)
-    
-    def make_default(self):
-        self.style.configure(background='green')
+        self.style.configure('TLabel',font=default_font)
+        self.style.configure('TNotebook', font='Helvetica')
+        self.style.configure('TButton', font=button_font)
 
 
 class tab:
 
     def __init__(self,parent):
         self.notebook = ttk.Notebook(parent)
-
-    def add_tab(self,title,text):
-        frame = ttk.Frame(self.notebook)
-        self.notebook.add(frame,text=title)
-        label = ttk.Label(frame,text=text)
-        label.grid(column=1,row=1)
-        self.notebook.pack()
 
     def add_bank_tab(self):
         frame = exam_bank_tab(self.notebook)
@@ -113,7 +98,7 @@ class intro_tab(ttk.Frame):
 
         text1 = '''tân'si, hello!\n\nMy name is Scrambler, and I am a program that helps instructors shuffle exams into unique versions. I also make answer keys for those versions!\n\nI am a simple progam in that all I do is: a) make a folder in your Documents called "Exam Bank", where I store exams; b) write your exams as templates in a format I can read, called CSV; and finally, c) take those templates and make unique versions of exams, printing them, along with an answer key, in a simple file format (.txt) that you can then copy and paste into word, pages, or docs to make pretty!\n\nThat is to say, I write files and I make folders in your Documents and Desktop. I don't delete folders or files, and I don't collect information about you or anything like that.\n\nIf you have comments or feedback, email my programmer, Wyatt, with the email in the "Contact / Support" tab. If you feel like it, you can also tip him with the paypal link in that same tab! (His favourite coffee is $5.45)'''
 
-        self.intro_text_label = ttk.Label(self, text = text1,wraplength=700)
+        self.intro_text_label = ttk.Label(self, text = text1,wraplength=950,justify='center',foreground=instruction_blurple)
         self.intro_text_label.grid(row=0, column=0)
 
 
@@ -122,7 +107,7 @@ class exam_bank_tab(ttk.Frame):
         super().__init__(parent)
 
         text_1 = """Let's set up your exam bank to get started!\nThe Exam Bank is a folder where I'll save all exam templates. When you click the button, below, I'll make a folder in your documents folder called 'Exam Bank.'\nAfter this, restart Scrambler and then we can create your first template! I'll use the templates to scramble exams in the future for you."""
-        self.label = ttk.Label(self,text=text_1,justify='center',width=38,foreground=instruction_blurple,wraplength=350)
+        self.label = ttk.Label(self,text=text_1,justify='center',width=label_width,foreground=instruction_blurple,wraplength=350)
         self.label.grid(column=0,row=0,columnspan=2)
         self.btn3 = ttk.Button(self, text="Make Exam Bank", command= lambda : make_exam_bank())
         self.btn3.grid(row=1, column=0,columnspan=2)
@@ -134,15 +119,15 @@ class scramble_tab(ttk.Frame):
         super().__init__(parent)    # Gives scramble_frame the 'tk' attritbute
 
         ############# Instructions, Right Side ###########
-        text_1 = """   Give the exam you want me to make a name, for example, 'Midterm 1, Psych 201', or 'Balinda.'\n   Then choose the exam you'd like to scramble and give the name. I look for exams in a folder, 'Exam Bank' in your documents. I only look for CSV files in that folder, though, so something like a word document (.docx) is basically invisiable to me.\n   Next, choose the number of versions you'd like me to make.\n   When you're ready, click 'send' and I'll make your exam! I'll put it in a folder on your desktop with the name you give me."""
-        self.instruction_label = ttk.Label(self,text=text_1,justify='left',width=40,foreground=instruction_blurple,wraplength=350)
-        self.instruction_label.grid(column=1, rowspan=6, padx=5, pady=10)
+        text_1 = """   Give the exam you want me to make a name, for example, 'Midterm 1, Psych 201', or 'Balinda.'\n\n   Then choose the exam you'd like to scramble and give the name. I look for exams in a folder, 'Exam Bank' in your documents. I only look for CSV files in that folder, though, so something like a word document (.docx) is basically invisiable to me.\n\n   Next, choose the number of versions you'd like me to make.\n\n   When you're ready, click 'send' and I'll make your exam! I'll put it in a folder on your desktop with the name you give me."""
+        self.instruction_label = ttk.Label(self,text=text_1,justify='center',width=label_width,foreground=instruction_blurple,wraplength=520)
+        self.instruction_label.grid(column=1, rowspan=6, padx=20, pady=20)
 
 
         ############# Exam Name #############
         # Label
         self.exam_name_label = ttk.Label(self, text="What name should I give the new exam?")
-        self.exam_name_label.grid(row=0, column=0, sticky=tk.W)
+        self.exam_name_label.grid(row=0, column=0)
 
         # Entry
         self.exam_name = usr_input(self)
@@ -151,7 +136,7 @@ class scramble_tab(ttk.Frame):
         ############# Exam Bank CSV to Scramble #############
         # Label
         self.exam_name_label = ttk.Label(self, text="Which exam should I scramble?")
-        self.exam_name_label.grid(row=2, column=0, sticky=tk.W)
+        self.exam_name_label.grid(row=2, column=0)
 
         # Combobox
         files = []
@@ -190,10 +175,11 @@ class scramble_tab(ttk.Frame):
         # Button
         self.btn = ttk.Button(self, text='Scramble!',\
                               command= lambda : \
-                                print("user input is\t{},{},{}".format(\
-                                    self.exam_name.get(),\
-                                    self.exam.get(),\
-                                    self.num_versions.get())))
+                                #print("user input is\t{},{},{}".format(\
+                                 #   self.exam_name.get(),\
+                                  #  self.exam.get(),\
+                                   # self.num_versions.get())))
+                                scramble_exam(self.exam_name.get(),(get_exam_bank()+"/"+self.exam.get()),int(self.num_versions.get())))
         self.btn.grid(row=6, column=0)
 
 
@@ -202,9 +188,9 @@ class new_exam(ttk.Frame):
         super().__init__(parent)    # Gives scramble_frame the 'tk' attritbute
 
         ############# Instructions #############
-        text1 = """Name the template something you'll remmebr; e.g.,'Midterm 2, Psych 101. Then press 'Send Exam Name. This will create your Exam template file for this exam, putting it in 'Exam Bank' in your documents folder.\n Then add questions and answers, one at a time, pressing 'Send Question and Answers' after each.\n\nFor 'all of the above' type questions, put 'all options' in the correct-answer box.\n\nFor essay questions, simply add one answer in the correct answer box."""
-        self.instr_label = ttk.Label(self, text=text1,padding=20,wraplength=350,foreground=instruction_blurple)
-        self.instr_label.grid(row=0,column=3,rowspan=8)
+        text1 = """   Name the template something you'll remember; e.g.,'Midterm 2, Psych 101.' Then press 'Send Exam Name'. This will create your Exam template file for this exam, putting it in 'Exam Bank' in your documents folder.\n\n   Then add questions and answers, one at a time, pressing 'Send Question and Answers' after each.\n\n   For 'all of the above' type questions, put 'all options' in the correct-answer box.\n\n   For essay questions, simply add one answer in the correct answer box."""
+        self.instr_label = ttk.Label(self, text=text1,justify='center',width=label_width,foreground=instruction_blurple,wraplength=520)
+        self.instr_label.grid(row=0,column=3,rowspan=8, padx=20, pady=20)
 
         ############# Exam Name #############
         # Label
