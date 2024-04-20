@@ -19,7 +19,8 @@ def mk_dir(path: str) -> str:
         '''If directory exists, creates a new directory inside of the existing directory,
         names it after the date, and sets this as the directory to create the exam
         and answer key.'''
-        path = path / get_time()                    # Makes a new directory names after the date with existing dir the parent
+        
+        path = path / get_time()    # Makes a new directory names after the date with existing dir the parent
         path.mkdir()
 
     except FileNotFoundError:       # Exception is thrown when path specifices directories that don't exist
@@ -29,7 +30,7 @@ def mk_dir(path: str) -> str:
         path = find_existing_dir_in_path(1,path)    # path now reflects only existing directories
         print("So, I will just try and put {} here:\n{}\n".format(new_dir,path.name))
         path2 = path / new_dir      # Append desired directory name to path
-        path = path2    #TODO is this redundant? could we just say, path = path / new_dir
+        path = path2                #TODO is this redundant? could we just say, path = path / new_dir
         
         try:
             path.mkdir()           # Makes desired directory in last existing directory of initial 'path' variable
@@ -38,7 +39,7 @@ def mk_dir(path: str) -> str:
             '''If directory exists, creates a new directory inside of the existing directory,
             names it after the date, and sets this as the directory to create the exam
             and answer key.'''
-            #path = Path(str(path)+"_"+get_time())      # Makes a new sibling directory with the old name AND the date
+
             path = path / get_time()                    # Makes a new directory names after the date with existing dir the parent
             path.mkdir()   
 
@@ -54,7 +55,7 @@ def mk_dir(path: str) -> str:
     
 
 def append_to_file(path: str,q,a,i,i2,i3):
-
+    '''Appends 5 passed-variables to the given file.'''
     with open(path, 'a+') as file:
         file.write('"{}","{}","{}","{}","{}"\n'.format(q,a,i,i2,i3))
 
@@ -92,15 +93,24 @@ def rename_file(path: Path) -> Path:
     
     return path
 
+
+def get_desktop() -> Path:
+    home_path = Path.home()     # /Users/[name]/
+    target_path = home_path / 'Desktop'
+    return target_path
+
+
 def get_document_dir() -> Path:
     home_path = Path.home()     # /Users/[name]/
     target_path = home_path / 'Documents'
     return target_path
 
+
 def get_exam_bank() -> str:
     target_path = get_document_dir()
     exam_bank = target_path / "Exam Bank"
     return str(exam_bank)
+
 
 def make_exam_bank() -> Path:
     documents = get_document_dir()
@@ -108,10 +118,6 @@ def make_exam_bank() -> Path:
     exam_bank = mk_dir(exam_bank)
     return exam_bank
 
-def get_desktop() -> Path:
-    home_path = Path.home()     # /Users/[name]/
-    target_path = home_path / 'Desktop'
-    return target_path
 
 if __name__ == "__main__":
     print("Hi.")

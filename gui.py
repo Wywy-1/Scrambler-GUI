@@ -37,15 +37,6 @@ periwinkle = '#B3C7F7'
 instruction_blurple = '#005051'
 d_green = '#002a2a'
 
-'''
-# Accessible pallet #2
-l_blue = '#BAE3F5'
-vl_blue = '#CDEDFA'
-peach = '#FFEBE2'
-m_peach = '#FEDCCF'
-d_peach = '#'FCCDBB'
-'''
-
 class app(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -144,12 +135,13 @@ class scramble_tab(ttk.Frame):
         home_path = Path.home()     # /Users/[name]
         exam_bank = home_path / 'Documents' / 'Exam Bank'
 
+        # Provides the names of all CSV files in Exam Bank as options
+        #   in Combobox, allowing one to be selected for Scramble function.
         try:
             for file in exam_bank.iterdir():
                 if file.suffix == '.csv':
                     files.append(file.name)
         except (FileNotFoundError):     #TODO #4 make a more elegant solution for no Exam Bank?
-            #exam_bank = make_exam_bank()
             files.append("Exam Bank is empty.")
 
         self.exam = write_in(self)
@@ -175,11 +167,10 @@ class scramble_tab(ttk.Frame):
         # Button
         self.btn = ttk.Button(self, text='Scramble!',\
                               command= lambda : \
-                                #print("user input is\t{},{},{}".format(\
-                                 #   self.exam_name.get(),\
-                                  #  self.exam.get(),\
-                                   # self.num_versions.get())))
-                                scramble_exam(self.exam_name.get(),(get_exam_bank()+"/"+self.exam.get()),int(self.num_versions.get())))
+                                scramble_exam(\
+                                    self.exam_name.get(),\
+                                        (get_exam_bank()+"/"+self.exam.get()),\
+                                            int(self.num_versions.get())))
         self.btn.grid(row=6, column=0)
 
 
@@ -242,7 +233,8 @@ class new_exam(ttk.Frame):
         self.btn1.grid(row=1,column=1)
         
         ############# Send Question Button #############
-        # Record question and answers within seperate double-quotations marks, then erases entries from ttk.Entry widgets
+        # Record question and answers within seperate double-quotations marks, 
+        #   then erases entries from ttk.Entry widgets
         self.btn2 = ttk.Button(self, state='disabled', text='Send Question and Answers',\
                               command= lambda : (\
                                 append_to_file(\
@@ -297,5 +289,3 @@ if __name__ == "__main__":
         nb.add_bank_tab()
 
     app.mainloop()
-
-#scramble_exam(exam_nm,exam_csv,int(Combo2.get()))

@@ -1,7 +1,6 @@
 import csv
 import random
 from file_n_dirs import mk_dir
-from file_n_dirs import rename_file
 from dates import get_time
 from pathlib import Path
 
@@ -22,7 +21,6 @@ class Question:
         # Shuffle only if more than 2 options.
         if len(self.options) > 1:
             random.shuffle(self.options)
-            #print("In shuffle_options")        #For Debugging
 
         for option_index, option in enumerate(self.options):
             exam_file_fp.write(f'\t{as_alpha(option_index)}. {option}\n')
@@ -36,16 +34,17 @@ class Question:
 def collect_questions(file_name: Path):
     '''Returns a list of Question items containing each line of a csv 
     file, except for the first line (the header).'''
+
     with open(file_name) as f:
         reader = csv.reader(f)
-        # Skip the header row
-        next(reader)
+        next(reader)            # Skip the header row
         return [Question(row) for row in reader]
 
 
 def as_alpha(index):
     '''Returns the char corresponding to the passed int away from "a". 
     E.g., as_alpha(1) returns "b", as_alpha(4) returns "e". '''
+
     return chr(index + ord('a'))
 
 
@@ -81,14 +80,12 @@ def generate_tests(csv_file_name, name, number_of_tests):
 
 
 def clean_input(input):
-    '''Takes a str representing user input and, a) returns a str if null,
+    '''Takes a str, user input, and, a) returns "Exam, [date/time]" if null,
     or b) replaces all "forbidden" puntuation with commas and returns this
     string.'''
+
     forbidden_punctuation = '''!()-[]\{\};:'"\<>./?@#$%^&*_~'''
 
-    # If user does not give a name for the exam file/directory, name it 
-    #       "Exam, xxx-xx,xxxx,xx:xx:xx", where "x" are the date and time
-    #       at send. Otherwise, take user's file name and remove punctuation.
     if input == "":
         exam_nm = "Exam, {}".format(get_time())
     else:
@@ -111,20 +108,6 @@ def scramble_exam(exam_name: str, exam_bank_file: str, num_ver: int):
 
     exam_name_path = exam_dir / exam_name
 
-    # Text to print to terminal
-    separator = '\n*********************************\n'
-    intro = "tân'si! I will scramble your exam now.\n"
-    print(separator)
-    print(intro)
-
     generate_tests(exam_bank_file,exam_name_path,num_ver)
 
-    #  print to terminal
-    outro = '''Aaaaand, DONE!
-    \nThe exam(s) and the answer key(s) can be found at\t{}.\n\nêkosi mâka!'''
-    print(outro.format(exam_dir))
-    print(separator)
-
     return exam_dir
-
-#scramble_exam('Test.4','Test2.csv',1)  # Test
