@@ -10,6 +10,7 @@ from file_n_dirs import get_document_dir
 from file_n_dirs import make_exam_bank
 from file_n_dirs import get_exam_bank
 from file_n_dirs import append_to_file
+from randomizer import clean_input
 
 '''References:
 The code on this script is adapted from the following sources:
@@ -187,7 +188,7 @@ class scramble_tab(ttk.Frame):
        
         ############# Send Button #############
         # Button
-        self.btn = ttk.Button(self, text='Send',\
+        self.btn = ttk.Button(self, text='Scramble!',\
                               command= lambda : \
                                 print("user input is\t{},{},{}".format(\
                                     self.exam_name.get(),\
@@ -259,7 +260,7 @@ class new_exam(ttk.Frame):
         self.btn2 = ttk.Button(self, state='disabled', text='Send Question and Answers',\
                               command= lambda : (\
                                 append_to_file(\
-                                    self.exam_path / str(self.exam_name.get() + '.csv'),\
+                                    str(self.exam_path / (clean_input(str(self.exam_name.get()))))+'.csv',\
                                         self.q.get(),\
                                             self.ca.get(),\
                                                 self.ia_1.get(),\
@@ -272,9 +273,6 @@ class new_exam(ttk.Frame):
                                 self.ia_3.delete(0,'end')))
         self.btn2.grid(row=7, column=0, columnspan=2)
 
-        #Debug Button
-        self.btn3 = ttk.Button(self,text="Test", command = lambda : (print("{}".format(self.exam_path / str(self.exam_name.get())))))
-        self.btn3.grid(row=8,column=0)
 
 #   Entry Class
 class usr_input(tk.Entry):
