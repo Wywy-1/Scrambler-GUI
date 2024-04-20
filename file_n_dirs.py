@@ -58,6 +58,7 @@ def append_to_file(path: str,q,a,i,i2,i3):
     with open(path, 'a+') as file:
         file.write('"{}","{}","{}","{}","{}"\n'.format(q,a,i,i2,i3))
 
+
 def find_existing_dir_in_path(count: int, path: str) -> str:
     """Searches through each parent in a path, returns the first
     parent that exists, and "." if no parent exists. 
@@ -96,10 +97,10 @@ def get_document_dir() -> Path:
     target_path = home_path / 'Documents'
     return target_path
 
-def get_exam_bank() -> Path:
+def get_exam_bank() -> str:
     target_path = get_document_dir()
     exam_bank = target_path / "Exam Bank"
-    return exam_bank
+    return str(exam_bank)
 
 def make_exam_bank() -> Path:
     documents = get_document_dir()
