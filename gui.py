@@ -110,7 +110,7 @@ class scramble_tab(ttk.Frame):
         super().__init__(parent)    # Gives scramble_frame the 'tk' attritbute
 
         ############# Instructions, Right Side ###########
-        text_1 = """   Give the exam you want me to make a name, for example, 'Midterm 1, Psych 201', or 'Balinda.'\n\n   Then choose the exam you'd like to scramble and give the name. I look for exams in a folder, 'Exam Bank' in your documents. I only look for CSV files in that folder, though, so something like a word document (.docx) is basically invisiable to me.\n\n   Next, choose the number of versions you'd like me to make.\n\n   When you're ready, click 'send' and I'll make your exam! I'll put it in a folder on your desktop with the name you give me."""
+        text_1 = """   Here, I'll take an exam template and make randomized versions of it with different answer keys. First, give me a name for the exam versions, for example, 'Midterm 1, Psych 201', or 'Balinda.'\n\n   Then choose the exam you'd like to scramble and give the name. I look for exams in a folder, 'Exam Bank' in your documents. I only look for CSV files in that folder, though, so something like a word document (.docx) is invisiable to me.\n\n   Next, choose the number of versions you'd like me to make.\n\n   When you're ready, click 'Scramble!' and I'll make your exam! I'll put it in a folder on your desktop with the name you give me."""
         self.instruction_label = ttk.Label(self,text=text_1,justify='center',width=label_width,foreground=instruction_blurple,wraplength=520)
         self.instruction_label.grid(column=1, rowspan=6, padx=20, pady=20)
 
@@ -179,7 +179,7 @@ class new_exam(ttk.Frame):
         super().__init__(parent)    # Gives scramble_frame the 'tk' attritbute
 
         ############# Instructions #############
-        text1 = """   Name the template something you'll remember; e.g.,'Midterm 2, Psych 101.' Then press 'Send Exam Name'. This will create your Exam template file for this exam, putting it in 'Exam Bank' in your documents folder.\n\n   Then add questions and answers, one at a time, pressing 'Send Question and Answers' after each.\n\n   For 'all of the above' type questions, put 'all options' in the correct-answer box.\n\n   For essay questions, simply add one answer in the correct answer box."""
+        text1 = """   Here, I'll make an exam template with a name you give me, and then fill it with your questions and answers. You'll have to give me the questions and their answers one at a time.\n\nName the template something you'll remember; e.g.,'Midterm 2, Psych 101.' Then press 'Send Exam Name'. I'll use this name for your new Exam template file, putting it in 'Exam Bank' in your documents folder.\n\n   Then add questions and answers, one at a time, pressing 'Send Question and Answers' after each. I'll make the file the first time you press the "Send" button.\n\n   For 'all of the above' type questions, put 'all options' in the correct-answer box.\n\n   For essay questions, simply add one answer in the correct answer box."""
         self.instr_label = ttk.Label(self, text=text1,justify='center',width=label_width,foreground=instruction_blurple,wraplength=520)
         self.instr_label.grid(row=0,column=3,rowspan=8, padx=20, pady=20)
 
@@ -238,7 +238,7 @@ class new_exam(ttk.Frame):
         self.btn2 = ttk.Button(self, state='disabled', text='Send Question and Answers',\
                               command= lambda : (\
                                 append_to_file(\
-                                    str(self.exam_path / (clean_input(str(self.exam_name.get()))))+'.csv',\
+                                    str(self.exam_path+"/"+(clean_input(str(self.exam_name.get()))))+'.csv',\
                                         self.q.get(),\
                                             self.ca.get(),\
                                                 self.ia_1.get(),\
