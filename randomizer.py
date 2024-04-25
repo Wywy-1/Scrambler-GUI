@@ -1,6 +1,6 @@
 import csv
 import random
-from file_n_dirs import mk_dir
+from files_and_directories import mk_dir
 from dates import get_time
 from pathlib import Path
 

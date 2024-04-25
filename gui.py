@@ -1,19 +1,15 @@
+from files_and_directories import get_document_dir
+from files_and_directories import make_exam_bank
+from files_and_directories import get_exam_bank
+from files_and_directories import append_to_file
+from pathlib import Path
+from randomizer import clean_input
+from randomizer import scramble_exam
 import tkinter as tk
 from tkinter import ttk
 
-#from tkinter.messagebox import showinfo
-#from tkinter.messagebox import showerror
-
-from randomizer import scramble_exam
-from pathlib import Path
-from file_n_dirs import get_document_dir
-from file_n_dirs import make_exam_bank
-from file_n_dirs import get_exam_bank
-from file_n_dirs import append_to_file
-from randomizer import clean_input
-
 '''References:
-The code on this script is adapted from the following sources:
+The code in this script is adapted from the following sources:
 
 ttkboostrap,
 https://ttkbootstrap.readthedocs.io/en/version-0.5/widgets/notebook.html
@@ -23,13 +19,12 @@ https://stackoverflow.com/questions/44745297/adding-notebook-tabs-in-tkinter-how
 
 python tutorial.net,
 https://www.pythontutorial.net/tkinter/tkinter-object-oriented-application/
-
 https://www.pythontutorial.net/tkinter/ttk-style/
 '''
 
 label_width = 40
 
-# Accessible Pallete #1
+# Colour Pallete
 peach = '#FAAF90'
 l_peach= '#FCC9B5'
 lavender = '#D9E4FF'
@@ -110,7 +105,7 @@ class scramble_tab(ttk.Frame):
         super().__init__(parent)    # Gives scramble_frame the 'tk' attritbute
 
         ############# Instructions, Right Side ###########
-        text_1 = """   Here, I'll take an exam template and make randomized versions of it with different answer keys. First, give me a name for the exam versions, for example, 'Midterm 1, Psych 201', or 'Balinda.'\n\n   Then choose the exam you'd like to scramble and give the name. I look for exams in a folder, 'Exam Bank' in your documents. I only look for CSV files in that folder, though, so something like a word document (.docx) is invisiable to me.\n\n   Next, choose the number of versions you'd like me to make.\n\n   When you're ready, click 'Scramble!' and I'll make your exam! I'll put it in a folder on your desktop with the name you give me."""
+        text_1 = """   Here, I'll take an exam template and make randomized versions of it with different answer keys. First, give me a name for the exam versions, for example, 'Midterm 1, Psych 201', or 'Balinda.'\n\n   Then choose the exam you'd like to scramble and give the name. I look for exams in a folder, 'Exam Bank' in your documents. I only look for CSV files in that folder, though, so something like a word document (.docx) is invisible to me.\n\n   Next, choose the number of versions you'd like me to make.\n\n   When you're ready, click 'Scramble!' and I'll make your exam! I'll put it in a folder on your desktop with the name you give me."""
         self.instruction_label = ttk.Label(self,text=text_1,justify='center',width=label_width,foreground=instruction_blurple,wraplength=520)
         self.instruction_label.grid(column=1, rowspan=6, padx=20, pady=20)
 
